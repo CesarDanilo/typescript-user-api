@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "tsc --watch",
     "start": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +18,12 @@
   "packageManager": "pnpm@10.11.0",
   "dependencies": {
     "@prisma/client": "^6.12.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.15",
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.10",
@@ -26,6 +32,10 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
-    "prisma": "^6.12.0"
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.5",
+    "prisma": "^6.12.0",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.9.2"
   }
 }
