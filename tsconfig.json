@@ -6,11 +6,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "skipLibCheck": true, // ← Isso evita conflitos em libs como express
+    "skipLibCheck": true,
     "types": [
-      "node",
-      "express"
-    ], // ← importante
+      "node"
+    ], // << REMOVE "express" daqui
     "typeRoots": [
       "./node_modules/@types"
     ]

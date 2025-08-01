@@ -1,30 +1,30 @@
-import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import { Request, Response } from 'express';
 import { PrismaClient } from '../generated/prisma';
 
 interface CreateUserBody {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
+  id: string;
+  name: string;
+  email: string;
+  password: string;
 }
 
 export default async function createUser(
-    req: ExpressRequest<{}, {}, CreateUserBody>,
-    res: ExpressResponse
+  req: Request<{}, {}, CreateUserBody>,
+  res: Response
 ) {
-    const data = req.body;
-    const prisma = new PrismaClient();
+  const data = req.body;
+  const prisma = new PrismaClient();
 
-    try {
-        const response = await prisma.user.create({ data });
+  try {
+    const response = await prisma.user.create({ data });
 
-        return res.status(201).json({
-            msg: `Usuário criado com sucesso`,
-            data: response,
-        });
-    } catch (erro) {
-        return res.status(500).json({
-            msg: `Erro ao criar usuário: ${erro}`,
-        });
-    }
+    return res.status(201).json({
+      msg: `Usuário criado com sucesso`,
+      data: response
+    });
+  } catch (erro) {
+    return res.status(500).json({
+      msg: `Erro ao criar usuário: ${erro}`
+    });
+  }
 }
