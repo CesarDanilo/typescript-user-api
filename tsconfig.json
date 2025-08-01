@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "types": [
       "node"
-    ], // << REMOVE "express" daqui
+    ],
     "typeRoots": [
       "./node_modules/@types"
     ]
