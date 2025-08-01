@@ -1,5 +1,4 @@
-// createUserController.ts
-import type { Request, Response } from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import { PrismaClient } from '../generated/prisma';
 
 interface CreateUserBody {
@@ -10,14 +9,15 @@ interface CreateUserBody {
 }
 
 export default async function createUser(
-    req: Request<{}, {}, CreateUserBody>,
-    res: Response
+    req: ExpressRequest<{}, {}, CreateUserBody>,
+    res: ExpressResponse
 ) {
     const data = req.body;
     const prisma = new PrismaClient();
 
     try {
         const response = await prisma.user.create({ data });
+
         return res.status(201).json({
             msg: `Usuário criado com sucesso`,
             data: response,
