@@ -1,8 +1,8 @@
 import express from 'express'
-import routes from '../api/Users'
+import route from '../api/Users'
 
-const route = express.Router();
+const mainRoute = express.Router();
 
-route.use('/users', routes);
+mainRoute.use('/users', route);
 
-export default route;
+export default mainRoute;

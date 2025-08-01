@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import route from '../src/routes/routes';
+import mainRoute from '../src/routes/routes';
 import cors from 'cors';
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-app.use('/api', route);
+app.use('/api', mainRoute);
 
 // Não use app.listen(), pois o Vercel gerencia o servidor.
 // Em vez disso, exporte a aplicação.
