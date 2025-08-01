@@ -1,7 +1,17 @@
 import express, { Request, Response } from 'express'
 import { PrismaClient } from '../generated/prisma'
 
-export default async function createUser(req: Request, res: Response) {
+interface CreateUserBody {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+}
+
+export default async function createUser(
+    req: Request<{}, {}, CreateUserBody>,
+    res: Response
+) {
     const data = req.body;
     const prisma = new PrismaClient();
 
@@ -9,13 +19,14 @@ export default async function createUser(req: Request, res: Response) {
         const response = await prisma.user.create({ data });
 
         return res.status(201).json({
-            msg: `Usuário criado com súcesso `,
-            data: response
-        })
-
+            msg: `Usuário criado com sucesso`,
+            data: response,
+        });
     } catch (erro) {
         return res.status(500).json({
-            msg: `não foi possivel fazer o cadastro do usuario: ${erro}`
-        })
+            msg: `Não foi possível fazer o cadastro do usuário: ${erro}`,
+        });
     }
 }
+
+
