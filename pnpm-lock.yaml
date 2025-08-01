@@ -35,6 +35,9 @@ importers:
       nodemon:
         specifier: ^3.1.10
         version: 3.1.10
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -60,9 +63,6 @@ importers:
       ts-jest:
         specifier: ^29.4.0
         version: 29.4.0(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0))(typescript@5.9.2)
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.2
 
 packages:
 
