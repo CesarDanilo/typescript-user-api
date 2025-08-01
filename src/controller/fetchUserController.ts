@@ -15,10 +15,10 @@ export default async function fetchUsers(req: Request, res: Response) {
         }
 
         const data = await prisma.user.findMany();
-        return res.status(200).json({
+        return res.status(200).send({
             msg: data
         })
-        
+
     } catch (erro) {
         return res.status(500).json({
             msg: erro
