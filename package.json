@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsc --watch",
     "start": "nodemon src/server.js",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate"
   },
   "jest": {
     "preset": "ts-jest",
