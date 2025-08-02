@@ -9,10 +9,10 @@ interface CreateUserBody {
 }
 
 export default async function createUser(
-    req: Request<{}, {}, CreateUserBody, {}, any>,
+    req: Request,
     res: Response
 ) {
-    const data = req.body;
+    const data = req.body as CreateUserBody;
     const prisma = new PrismaClient();
 
     try {
