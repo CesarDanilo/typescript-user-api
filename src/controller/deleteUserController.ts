@@ -1,17 +1,36 @@
-import express, { Request, Response } from 'express'
+import { IncomingMessage, ServerResponse } from 'http';
+import { parse } from 'url';
 import { PrismaClient } from "../generated/prisma";
 
-export default async function deleteUser(req: Request, res: Response) {
+export default async function deleteUser(req: IncomingMessage, res: ServerResponse) {
   const prisma = new PrismaClient();
-  const { id } = req.query;
+
+  // 1. Analisa a URL para obter os parâmetros da query
+  const { url } = req;
+  const { query } = parse(url || '', true);
+  const { id } = query;
+
+  // 2. Valida se o ID existe
+  if (!id) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ msg: "O parâmetro 'id' é obrigatório" }));
+    return;
+  }
 
   try {
     const response = await prisma.user.delete({ where: { id: String(id) } });
-    return res.status(200).json({
-      msg: "Usuário deletado com súcesso"
-    })
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      msg: "Usuário deletado com sucesso",
+    }));
 
   } catch (erro) {
-    return res.status(500).json({ msg: `Algo deu errado: ${erro}` })
+    // Trata o erro e envia a resposta
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ msg: `Algo deu errado: ${erro}` }));
   }
 }
