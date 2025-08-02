@@ -9,7 +9,7 @@ interface CreateUserBody {
 }
 
 export default async function createUser(
-    req: Request,
+    req: Request<{}, {}, CreateUserBody>,
     res: Response
 ) {
     const data = req.body as CreateUserBody;
