@@ -1,7 +1,9 @@
-import type { Request, Response, NextFunction } from 'express';
+import { IncomingMessage, ServerResponse } from 'http';
+import { json } from 'micro';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import { PrismaClient } from '../generated/prisma'; // Adicionei a importação do Prisma
 
 const schemas = z.object({
   email: z.string().email("Email inválido"),
@@ -16,22 +18,58 @@ interface CreateUserBody {
   password: string;
 }
 
-export default async function UserDataValidation(
-  req: Request<{}, {}, CreateUserBody>,
-  res: Response,
-  next: NextFunction
+export default async function createUserHandler(
+  req: IncomingMessage,
+  res: ServerResponse
 ) {
-  const result = schemas.safeParse(req.body);
+  const prisma = new PrismaClient();
+
+  // 1. Leia o corpo da requisição com `micro/json`
+  const rawData = await json(req);
+
+  // 2. Valide os dados usando o Zod
+  const result = schemas.safeParse(rawData);
 
   if (!result.success) {
-    return res.status(400).json({
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
       message: "Dados inválidos",
       errors: result.error.format()
-    });
+    }));
+    return;
   }
 
-  req.body.id = uuidv4();
-  req.body.password = await bcrypt.hash(req.body.password, 10);
+  // Se a validação for bem-sucedida, prossiga com a lógica de criação
+  try {
+    const { name, email, password } = result.data;
 
-  next();
+    // 3. Prepare os dados (gerar ID e hash da senha)
+    const id = uuidv4();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 4. Salve o usuário no banco de dados
+    const user = await prisma.user.create({
+      data: {
+        id,
+        name,
+        email,
+        password: hashedPassword
+      }
+    });
+
+    res.statusCode = 201;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      message: "Usuário criado com sucesso!",
+      user: user
+    }));
+
+  } catch (error) {
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      message: "Erro interno do servidor durante a criação do usuário."
+    }));
+  }
 }
