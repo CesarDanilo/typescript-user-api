@@ -1,4 +1,5 @@
-import type { Request, Response } from 'express';
+import { Request, Response } from 'express';
+import { json } from 'micro';
 import { PrismaClient } from '../generated/prisma';
 
 interface CreateUserBody {
@@ -9,23 +10,16 @@ interface CreateUserBody {
 }
 
 export default async function createUser(
-    req: Request<{}, {}, CreateUserBody>,
+    req: Request,
     res: Response
 ) {
-    const { id, name, email, password } = req.body; // Desestruturar o corpo da requisição
+    // Use a função json do 'micro' para obter o corpo da requisição
+    const data = await json(req) as CreateUserBody;
 
-    // O id é gerado no backend, certo? Se não, a tipagem estaria incorreta, já que o usuário não pode enviar um id.
     const prisma = new PrismaClient();
 
     try {
-        const response = await prisma.user.create({
-            data: {
-                id,
-                name,
-                email,
-                password
-            }
-        });
+        const response = await prisma.user.create({ data });
         return res.status(201).json({
             msg: "Usuário criado com sucesso",
             data: response,

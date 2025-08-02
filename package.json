@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "tsc --watch",
-    "start": "nodemon src/server.js",
+    "build": "npx tsc && npx prisma generate",
+    "start": "nodemon dist/server.js", 
     "test": "jest",
     "postinstall": "prisma generate"
   },
@@ -26,6 +27,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "micro": "^10.0.1",
     "nodemon": "^3.1.10",
     "typescript": "^5.9.2",
     "uuid": "^11.1.0",
