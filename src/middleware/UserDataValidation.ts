@@ -9,8 +9,15 @@ const schemas = z.object({
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres")
 });
 
+interface CreateUserBody {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export default async function UserDataValidation(
-  req: Request,
+  req: Request<{}, {}, CreateUserBody>,
   res: Response,
   next: NextFunction
 ) {
